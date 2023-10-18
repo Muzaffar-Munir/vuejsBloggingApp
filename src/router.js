@@ -4,7 +4,6 @@ import MoviesPage from './components/MoviesPage'
 import Home from './components/Home'
 import contact from './components/contactPage'
 import AboutPage from './components/AboutPage'
-import SignUpPage from './components/signUpPage'
 
 Vue.use(VueRouter)
 
@@ -37,7 +36,12 @@ const routes = [
    {
       path: '/register',
       name: 'Sign Up',
-      component: SignUpPage
+      component: Vue.component('signUpPage', require('./components/signUpPage').default)
+   },
+   {
+      path: '/verify/:username',
+      name: 'Verify',
+      component: Vue.component('VerificationPage', require('./components/verificationPage.vue').default)
    },
    {
       path: '/dashboard',

@@ -4,9 +4,9 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form>
+                <form @submit="login">
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input type="text" class="form-control" placeholder="Username" v-model="username">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input type="password" class="form-control" placeholder="Password" v-model="password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -30,10 +30,7 @@
                     </div>
                 </form>
 
-                <p class="mb-1">
-                    <a href="forgot-password.html">I forgot my password</a>
-                </p>
-                <p class="mb-0">
+                <p class="mb-0 mt-2">
                     <router-link to="/register">Register a new membership</router-link>
                 </p>
             </div>
@@ -42,6 +39,8 @@
 </template>
   
 <script>
+import AWS from '../config/aws-config';
+
 export default {
     name: 'LoginPage',
     data() {
@@ -51,16 +50,25 @@ export default {
         }
     },
     methods: {
-        register() {
+        login() {
+            const cognito = new AWS.CognitoIdentityServiceProvider();
             const params = {
-                AuthFlow: 'USER_PASSWORD_AUTH',
-                ClientId: 'Client_id', // Replace with your App Client ID
+                AuthFlow: process.env.VUE_APP_LOGIN_TYPE,
+                ClientId: process.env.VUE_APP_AWS_CLIENT_ID, // Replace with your App Client ID
                 AuthParameters: {
                     USERNAME: this.username,
                     PASSWORD: this.password,
                 },
             };
-            console.log("Register ::::: ", params)
+            cognito.initiateAuth(params, (err, data) => {
+                if (err) {
+                    console.error('Sign-in error:', err);
+                } else {
+                    localStorage.setItem("currentUser", data.AuthenticationResult.AccessToken)
+                    this.$router.push('/');
+                    console.log('Sign-in success:', data);
+                }
+            });
         }
     }
 }

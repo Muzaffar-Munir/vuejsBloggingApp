@@ -52,6 +52,8 @@
 </template>
   
 <script>
+import AWS from '../config/aws-config';
+
 export default {
     name: 'SignUpPage',
     data() {
@@ -64,8 +66,10 @@ export default {
     },
     methods: {
         register() {
+            const cognito = new AWS.CognitoIdentityServiceProvider();
+
             const params = {
-                ClientId: 'Use-user-pool-client-id', // Replace with your App Client ID
+                ClientId: process.env.VUE_APP_AWS_CLIENT_ID, // Replace with your App Client ID
                 Username: this.username,
                 Password: this.password,
                 UserAttributes: [
@@ -75,7 +79,17 @@ export default {
                     },
                 ],
             };
-            console.log("Register ::::: ", params)
+
+            cognito.signUp(params, (err, data) => {
+                if (err) {
+                    console.error('Sign-up error:', err);
+                } else {
+                    this.$router.push(`/verify/${this.username}`);
+                    console.log('Sign-up success:', data);
+                    // Handle user confirmation, send confirmation code
+                }
+            });
+
         }
     }
 }
