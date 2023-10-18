@@ -4,6 +4,8 @@ import MoviesPage from './components/MoviesPage'
 import Home from './components/Home'
 import contact from './components/contactPage'
 import AboutPage from './components/AboutPage'
+import LoginPage from './components/loginPage'
+import SignUpPage from './components/signUpPage'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
       path: '/movies',
       name: 'movies',
       component: MoviesPage
+   },
+   {
+      path: '/login',
+      name: 'login',
+      component: LoginPage
+   },
+   {
+      path: '/register',
+      name: 'Sign Up',
+      component: SignUpPage
    },
    {
       path: '/dashboard',
