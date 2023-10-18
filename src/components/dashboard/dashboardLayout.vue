@@ -1,8 +1,9 @@
 <template>
     <div class="hello">
         <sideBarNav></sideBarNav>
-
-        <router-view></router-view>
+        <div class="content-wrapper">
+            <router-view></router-view>
+        </div>
 
         <!-- Main Footer -->
         <footer class="main-footer">

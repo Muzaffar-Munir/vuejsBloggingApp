@@ -29,8 +29,14 @@ const routes = [
       component: MoviesPage
    },
    {
+      path: '/login',
+      name: 'login',
+      component: Vue.component('loginPage', require('./components/loginPage').default),
+   },
+   {
       path: '/dashboard',
       name: 'dashboard',
+      beforeEnter: guardMyroute,
       component: Vue.component('dashboardLayout', require('./components/dashboard/dashboardLayout').default),
       children: [
          {
@@ -41,6 +47,14 @@ const routes = [
       ]
    }
 ]
+
+function guardMyroute(to, from, next)
+{
+   if (localStorage.getItem("currentUser") === null) {
+      next({ name: 'login' })
+    }
+    next();
+}
 
 // eslint-disable-next-line no-new
 const router = new VueRouter({
