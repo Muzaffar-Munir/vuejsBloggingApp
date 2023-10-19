@@ -50,6 +50,7 @@ export default {
                 if (err) {
                     console.error('Code verification error:', err);
                 } else {
+                    this.$router.push('/success');
                     console.log('Code verification success:', data);
                     // Proceed with user sign-in or other actions
                 }
