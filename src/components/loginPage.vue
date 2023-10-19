@@ -51,6 +51,7 @@ export default {
     },
     methods: {
         login() {
+            this.$store.commit('isShowLoader', true)
             const cognito = new AWS.CognitoIdentityServiceProvider();
             const params = {
                 AuthFlow: process.env.VUE_APP_LOGIN_TYPE,
@@ -62,11 +63,15 @@ export default {
             };
             cognito.initiateAuth(params, (err, data) => {
                 if (err) {
+                    this.$store.commit('isShowLoader', false)
+
                     console.error('Sign-in error:', err);
                 } else {
                     localStorage.setItem("currentUser", data.AuthenticationResult.AccessToken)
-                    this.$router.push('/');
+                    this.$router.push('/dashboard/home');
                     console.log('Sign-in success:', data);
+                    this.$store.commit('isShowLoader', false)
+
                 }
             });
         }

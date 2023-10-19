@@ -27,7 +27,12 @@ const apolloClient = new ApolloClient({
 Vue.use(VueApollo);
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
+  watchLoading (isLoading) {
+    this.$store.commit('isShowLoader', isLoading)
+    // loading += countModifier
+    // console.log('Global loading', loading, countModifier)
+  },
 });
 
 new Vue({

@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 const state = {
-    count: 0
+    count: 0,
+    showLoader: false,
 }
 const getters = {
     evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
@@ -14,6 +15,9 @@ const mutations = {
     },
     decrement(state) {
        state.count--;
+    },
+    isShowLoader(state, payload){
+        state.showLoader = payload
     }
 }
 

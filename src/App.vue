@@ -1,14 +1,23 @@
 <template>
   <div id="app">
+    <loader :is-visible="this.$store.state.showLoader"></loader>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 
+import loader from './components/loaderComponent.vue';
 
 export default {
+  components:{
+    loader
+  },
   name: 'App',
+  data(){
+    return{
+    }
+  },
   methods: {
     increments(){
       // this.$store.commit('increment')
@@ -26,10 +35,8 @@ export default {
       this.$store.commit("decrement")
 
     }
-  },
-  created(){
-   
   }
+   
 }
 </script>
 
