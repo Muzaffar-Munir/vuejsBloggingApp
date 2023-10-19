@@ -46,6 +46,11 @@ const routes = [
       component: Vue.component('VerificationPage', require('./components/verificationPage.vue').default)
    },
    {
+      path: '/success',
+      name: 'Success',
+      component: Vue.component('SuccessPage', require('./components/successPage.vue').default)
+   },
+   {
       path: '/dashboard',
       name: 'dashboard',
       beforeEnter: guardMyroute,
