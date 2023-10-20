@@ -9,13 +9,10 @@
           <div class="col-sm-6">
             <h1 class="m-0">Dashboard v3</h1>
           </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v3</li>
-            </ol>
-          </div><!-- /.col -->
         </div><!-- /.row -->
+        <div>
+          <button @click="handleCreate" class="btn btn-primary">Create</button>
+        </div>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -148,7 +145,11 @@
 
 <script>
 export default {
-
-    name: 'dashboardHome'
+    name: 'dashboardHome',
+    methods: {
+      handleCreate() {
+        this.$router.push('/dashboard/belog-create');
+      }
+    }
 }
 </script>

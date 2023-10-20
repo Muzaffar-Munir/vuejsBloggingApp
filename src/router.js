@@ -61,6 +61,11 @@ const routes = [
             name: 'home',
             component: Vue.component('homeComponent', require('./components/dashboard/homePage').default)
         },
+         {
+            path: 'belog-create',
+            name: 'belog create',
+            component: Vue.component('BelogCreate', require('./components/dashboard/create').default)
+        },
       ]
    }
 ]
