@@ -23,10 +23,10 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="card card-default">
                             <div class="card-header">
-                                <h3 class="card-title">Create Blog</h3>
+                                <h3 class="card-title">Create User</h3>
                             </div>
                             <div class="card-body p-2">
                                 <div class="bs-stepper">
@@ -65,7 +65,7 @@
 <script>
 
 export default {
-    name: 'BlogCreate',
+    name: 'CreateUser',
     data() {
         return {
             title: '',

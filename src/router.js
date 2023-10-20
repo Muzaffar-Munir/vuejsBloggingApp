@@ -53,6 +53,7 @@ const routes = [
    {
       path: '/dashboard',
       name: 'dashboard',
+      redirect: { name: 'home' },
       beforeEnter: guardMyroute,
       component: Vue.component('dashboardLayout', require('./components/dashboard/dashboardLayout').default),
       children: [
@@ -60,23 +61,33 @@ const routes = [
             path: 'home',
             name: 'home',
             component: Vue.component('homeComponent', require('./components/dashboard/homePage').default)
-        },
+         },
          {
-            path: 'belog-create',
-            name: 'belog create',
-            component: Vue.component('BelogCreate', require('./components/dashboard/create').default)
-        },
+            path: 'blog-create',
+            name: 'blog create',
+            component: Vue.component('BlogCreate', require('./components/dashboard/create').default)
+         },
+         {
+            path: 'listUser',
+            name: 'listUser',
+            component: Vue.component('listUser', require('./components/dashboard/muzaffar/listUser').default)
+         },
+         {
+            path: 'createUser',
+            name: 'createUser',
+            component: Vue.component('createUser', require('./components/dashboard/muzaffar/createUser').default)
+         },
+
       ]
    }
 ]
 
-function guardMyroute(to, from, next)
-{
+function guardMyroute(to, from, next) {
    if (localStorage.getItem("currentUser") === null) {
       console.log('iiiiiiiiii');
       next({ name: 'login' })
-    }
-    next();
+   }
+   next();
 }
 
 // eslint-disable-next-line no-new

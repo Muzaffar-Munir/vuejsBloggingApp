@@ -148,7 +148,7 @@ export default {
     name: 'dashboardHome',
     methods: {
       handleCreate() {
-        this.$router.push('/dashboard/belog-create');
+        this.$router.push('/dashboard/blog-create');
       }
     }
 }

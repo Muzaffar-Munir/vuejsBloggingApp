@@ -1,0 +1,180 @@
+<template>
+  <div>
+    <!-- Content Wrapper. Contains page content -->
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid d-flex">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <!-- <h1 class="m-0">Dashboard v3</h1> -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+        <div>
+          <routerLink to="/dashboard/createUser"> <button class="btn btn-primary">Create</button></routerLink>
+        </div>
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+
+            <!-- /.card -->
+
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Users</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                {{ listUserServiceDevs }}
+                <table class="table table-striped table-valign-middle">
+                  <thead>
+                    <tr>
+                      <th>Id #</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>More</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                        Some Product
+                      </td>
+                      <td>$13 USD</td>
+                      <td>
+                        <small class="text-success mr-1">
+                          <i class="fas fa-arrow-up"></i>
+                          12%
+                        </small>
+                        12,000 Sold
+                      </td>
+                      <td>
+                        <a href="#" class="text-muted">
+                          <i class="fas fa-search"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                        Another Product
+                      </td>
+                      <td>$29 USD</td>
+                      <td>
+                        <small class="text-warning mr-1">
+                          <i class="fas fa-arrow-down"></i>
+                          0.5%
+                        </small>
+                        123,234 Sold
+                      </td>
+                      <td>
+                        <a href="#" class="text-muted">
+                          <i class="fas fa-search"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                        Amazing Product
+                      </td>
+                      <td>$1,230 USD</td>
+                      <td>
+                        <small class="text-danger mr-1">
+                          <i class="fas fa-arrow-down"></i>
+                          3%
+                        </small>
+                        198 Sold
+                      </td>
+                      <td>
+                        <a href="#" class="text-muted">
+                          <i class="fas fa-search"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                        Perfect Item
+                        <span class="badge bg-danger">NEW</span>
+                      </td>
+                      <td>$199 USD</td>
+                      <td>
+                        <small class="text-success mr-1">
+                          <i class="fas fa-arrow-up"></i>
+                          63%
+                        </small>
+                        87 Sold
+                      </td>
+                      <td>
+                        <a href="#" class="text-muted">
+                          <i class="fas fa-search"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+</template>
+
+<script>
+import gql from 'graphql-tag';
+
+const GET_USERS = gql`
+
+query MyQuery {
+  listUserServiceDevs {
+    items {
+      email
+      id
+      name
+    }
+  }
+}
+
+
+`;
+export default {
+  name: 'dashboardHome',
+  methods: {
+ 
+  },
+  data() {
+    return {
+      listUserServiceDevs: [],
+    }
+  },
+  apollo: {
+    listUserServiceDevs: {
+      query: GET_USERS,
+
+    }
+  },
+}
+</script>

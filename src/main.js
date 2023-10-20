@@ -9,6 +9,10 @@ import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+import errorLink from "./config/apollo-error-handler";
+import { ApolloLink } from "apollo-link";
+
+
 import VueApollo from 'vue-apollo';
 
 Vue.config.productionTip = false;
@@ -34,7 +38,8 @@ const httpLink = new HttpLink({
 });
 
 const apolloClient = new ApolloClient({
-  link: httpLink,
+  // link: httpLink,
+  link: ApolloLink.from([errorLink, httpLink]),
   cache: new InMemoryCache(),
   connectToDevTools: true
 });
