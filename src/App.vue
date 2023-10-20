@@ -21,13 +21,13 @@ export default {
   methods: {
     increments(){
       // this.$store.commit('increment')
-    this.$store.commit('increment')
+      this.$store.commit('increment')
 
     },
     redirectTo(){
       console.log('clikded');
-    //  this.decremented();
-    console.log(this.$store.state.count)
+      //  this.decremented();
+      console.log(this.$store.state.count)
 
     },
     decremented(){
@@ -36,7 +36,6 @@ export default {
 
     }
   }
-   
 }
 </script>
 

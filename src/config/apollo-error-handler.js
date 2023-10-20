@@ -1,18 +1,19 @@
 import { onError } from "apollo-link-error";
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+const createErrorLink = ($toast, $router) => onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
       console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
     });
   }
   if (networkError) {
-    console.log(`[Network error]: ${networkError}`, networkError?.statusCode);
+    $toast.error(networkError?.message);
     if(networkError?.statusCode === 401){
         localStorage.removeItem('currentUser');
-        
+        $router.push('/login')
+
     }
   }
 });
 
-export default errorLink;
+export default createErrorLink;
