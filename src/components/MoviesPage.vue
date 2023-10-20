@@ -3,9 +3,9 @@
     <h1>{{ 'MoviesPage' }}</h1>
     <h4>{{ msg }}</h4>
 
-    <div v-for="movie in albums?.data" :key="movie.id">
+    <div v-for="movie in listUserServiceDevs?.items" :key="movie.id">
       <div :key="movie.id">
-        <h3>{{ movie.title }}</h3>
+        <h3>{{ movie.name }}</h3>
       </div>
     </div>
   </div>
@@ -16,15 +16,27 @@ import gql from "graphql-tag";
 
 import { CognitoUserPool , AuthenticationDetails, CognitoUser} from 'amazon-cognito-identity-js';
 
+// query Albums {
+//     albums {
+//         data {
+//             id
+//             title
+//         }
+//     }
+// }
+
 const GET_Albums = gql`
-query Albums {
-    albums {
-        data {
-            id
-            title
-        }
+
+query MyQuery {
+  listUserServiceDevs {
+    items {
+      email
+      id
+      name
     }
+  }
 }
+
 
 `;
 
@@ -71,7 +83,7 @@ export default {
   },
   data() {
     return {
-      albums: [],
+      listUserServiceDevs: [],
       user: {
         Username: '',
         Password: ''
@@ -79,7 +91,7 @@ export default {
     };
   },
   apollo: {
-    albums: {
+    listUserServiceDevs: {
       query: GET_Albums
     }
   },

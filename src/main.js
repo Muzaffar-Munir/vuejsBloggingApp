@@ -13,9 +13,24 @@ import VueApollo from 'vue-apollo';
 
 Vue.config.productionTip = false;
 
+function getHeaders() {
+  const headers = { Authorization: '', 'Content-Type': '' };
+  const token = localStorage.getItem("currentUser");
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  headers["Content-Type"] = "application/json";
+  return headers;
+}
+
 
 const httpLink = new HttpLink({
-  uri: 'https://graphqlzero.almansi.me/api'
+  // uri: 'https://graphqlzero.almansi.me/api'
+  uri: 'https://gjvhpurezjc2bjm7gyaoweabl4.appsync-api.us-east-1.amazonaws.com/graphql',
+  fetch: (uri, options) => {
+    options.headers = getHeaders();
+    return fetch(uri, options);
+  },
 });
 
 const apolloClient = new ApolloClient({

@@ -36,6 +36,11 @@ const routes = [
       component: Vue.component('loginPage', require('./components/loginPage').default)
    },
    {
+      path: '/loginMuzaffar',
+      name: 'loginMuzaffar',
+      component: Vue.component('loginMuzaffarPage', require('./components/loginMuzaffarPage').default)
+   },
+   {
       path: '/register',
       name: 'Sign Up',
       component: Vue.component('signUpPage', require('./components/signUpPage').default)
@@ -44,11 +49,6 @@ const routes = [
       path: '/verify/:username',
       name: 'Verify',
       component: Vue.component('VerificationPage', require('./components/verificationPage.vue').default)
-   },
-   {
-      path: '/success',
-      name: 'Success',
-      component: Vue.component('SuccessPage', require('./components/successPage.vue').default)
    },
    {
       path: '/dashboard',
@@ -68,6 +68,7 @@ const routes = [
 function guardMyroute(to, from, next)
 {
    if (localStorage.getItem("currentUser") === null) {
+      console.log('iiiiiiiiii');
       next({ name: 'login' })
     }
     next();
