@@ -43,7 +43,7 @@ function getHeaders() {
 
 const httpLink = new HttpLink({
   // uri: 'https://graphqlzero.almansi.me/api'
-  uri: 'https://gjvhpurezjc2bjm7gyaoweabl4.appsync-api.us-east-1.amazonaws.com/graphql',
+  uri: process.env.VUE_APP_AWS_APPSYNC_URI,
   fetch: (uri, options) => {
     options.headers = getHeaders();
     return fetch(uri, options);
