@@ -68,6 +68,11 @@ const routes = [
             component: Vue.component('BlogCreate', require('./components/dashboard/create').default)
          },
          {
+            path: 'blog-edit/:id',
+            name: 'blog create',
+            component: Vue.component('BlogCreate', require('./components/dashboard/create').default)
+         },
+         {
             path: 'listUser',
             name: 'listUser',
             component: Vue.component('listUser', require('./components/dashboard/muzaffar/listUser').default)

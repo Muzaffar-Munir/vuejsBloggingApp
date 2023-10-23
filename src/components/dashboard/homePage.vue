@@ -1,7 +1,7 @@
 <template>
-    <div>
-          <!-- Content Wrapper. Contains page content -->
- 
+  <div>
+    <!-- Content Wrapper. Contains page content -->
+
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
-           
+
             <!-- /.card -->
 
             <div class="card">
@@ -39,91 +39,26 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-striped table-valign-middle">
                   <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Sales</th>
-                    <th>More</th>
-                  </tr>
+                    <tr>
+                      <th>Id</th>
+                      <th>title</th>
+                      <th>Content</th>
+                      <th>Actions</th>
+                    </tr>
                   </thead>
-                  <tbody>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Some Product
-                    </td>
-                    <td>$13 USD</td>
-                    <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
-                        12%
-                      </small>
-                      12,000 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Another Product
-                    </td>
-                    <td>$29 USD</td>
-                    <td>
-                      <small class="text-warning mr-1">
-                        <i class="fas fa-arrow-down"></i>
-                        0.5%
-                      </small>
-                      123,234 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Amazing Product
-                    </td>
-                    <td>$1,230 USD</td>
-                    <td>
-                      <small class="text-danger mr-1">
-                        <i class="fas fa-arrow-down"></i>
-                        3%
-                      </small>
-                      198 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Perfect Item
-                      <span class="badge bg-danger">NEW</span>
-                    </td>
-                    <td>$199 USD</td>
-                    <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
-                        63%
-                      </small>
-                      87 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
+                  <tbody v-if="blogs.length">
+                    <tr v-for="item in blogs" :key="item.id">
+                      <td>
+                        1
+                      </td>
+                      <td>{{ item.title }}</td>
+                      <td>{{ item.content }}</td>
+                      <td>
+                        <button @click="deleteBlog(item.id)" class="btn btn-danger btn-sm">Delete</button>
+                        <button @click="handleClickEdit(item.id)" class="btn btn-success btn-sm ml-1">Edit</button>
+                        <button type="button" class="btn btn-info btn-sm ml-1">View</button>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -131,7 +66,7 @@
             <!-- /.card -->
           </div>
           <!-- /.col-md-6 -->
-          
+
           <!-- /.col-md-6 -->
         </div>
         <!-- /.row -->
@@ -140,16 +75,76 @@
     </div>
     <!-- /.content -->
   </div>
-  
 </template>
 
 <script>
-export default {
-    name: 'dashboardHome',
-    methods: {
-      handleCreate() {
-        this.$router.push('/dashboard/blog-create');
-      }
+
+import gql from 'graphql-tag';
+
+const GET_USERS = gql`
+query ListBlogs {
+    listBlogs {
+        items {
+            id
+            title
+            content
+        }
     }
+}`;
+
+export default {
+  name: 'dashboardHome',
+  data() {
+    return {
+      blogs: []
+    }
+  },
+  methods: {
+    handleCreate() {
+      this.$router.push('/dashboard/blog-create');
+    },
+    async getBlog() {
+      try {
+        const { data } = await this.$apollo.query({
+          query: GET_USERS,
+          fetchPolicy: 'no-cache'
+        });
+        this.blogs = data.listBlogs.items;
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    },
+    async deleteBlog(id) {
+      try {
+        const { data } = await this.$apollo.mutate({
+          mutation: gql`mutation MyQuery {
+          deleteBlog(input: {id: "${id}"}){
+          id
+          }
+        }
+        `,
+        });
+        if (data && data.deleteBlog) {
+          console.log("Item deleted successfully!");
+          this.getBlog();
+          // Optionally, you can handle UI updates or redirects after successful deletion.
+        } else {
+          this.$toast.error('something went wrong!');
+        }
+
+      } catch (error) {
+        console.log(error);
+        console.log("Error deleting item:", error);
+        this.$toast.error('something went wrong');
+        // Handle error states or show error messages to the user.
+      }
+    },
+    handleClickEdit(id) {
+      this.$router.push('/dashboard/blog-edit/' + id)
+    }
+  },
+  created() {
+    this.getBlog();
+  }
 }
 </script>
