@@ -14,6 +14,9 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block" style="cursor: pointer;">
+        <a @click="logout" class="nav-link">Logout</a>
+      </li>
     </ul>
 
     <!-- Right navbar links -->
@@ -234,5 +237,11 @@
 <script>
 export default {
     name: 'sideBarNav',
+    methods:{
+      logout(){
+        localStorage.clear();
+        this.$router.push('/login')
+      }
+    }
 }
 </script>
