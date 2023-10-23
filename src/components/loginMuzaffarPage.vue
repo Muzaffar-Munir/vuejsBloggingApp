@@ -69,7 +69,7 @@ export default {
                 Username: this.user.Username,
                 Pool: userPool,
             };
-            // this.$store.commit('isShowLoader', true)
+            this.$store.commit('isShowLoader', true)
             const cognitoUser = new CognitoUser(userData);
             cognitoUser.authenticateUser(authenticationDetails, {
                 onSuccess: function (result) {
@@ -85,14 +85,18 @@ export default {
                     // this.$store.commit('isShowLoader', false)
                     localStorage.setItem("currentUser", accessToken)
                     router.push('/dashboard/home');
+                    this.$store.commit('isShowLoader', false)
+                    
 
 
-                },
+                }.bind(this),
 
                 onFailure: function (err) {
-                    console.log('failuare', err);
-                    // this.$store.commit('isShowLoader', false)
-                },
+                    console.log('failuare', err?.message);
+                    this.$toast.error(err?.message || 'ERROR while login!')
+                    this.$store.commit('isShowLoader', false)
+
+                }.bind(this),
             });
         }
     }

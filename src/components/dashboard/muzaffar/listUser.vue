@@ -37,7 +37,6 @@
                 </div>
               </div>
               <div class="card-body table-responsive p-0">
-                {{ listUserServiceDevs }}
                 <table class="table table-striped table-valign-middle">
                   <thead>
                     <tr>
@@ -48,83 +47,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr v-for="(item, index) in listUserServiceDevs?.items" :key="index">
                       <td>
-                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                        Some Product
+                        {{ item?.id }}
                       </td>
-                      <td>$13 USD</td>
+                      <td>{{ item?.name }}</td>
                       <td>
-                        <small class="text-success mr-1">
-                          <i class="fas fa-arrow-up"></i>
-                          12%
-                        </small>
-                        12,000 Sold
+                        {{ item?.email }}
                       </td>
                       <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
+                        <button class="btn btn-danger" @click="deleteItem(item.id)">Delete</button>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                        Another Product
-                      </td>
-                      <td>$29 USD</td>
-                      <td>
-                        <small class="text-warning mr-1">
-                          <i class="fas fa-arrow-down"></i>
-                          0.5%
-                        </small>
-                        123,234 Sold
-                      </td>
-                      <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                        Amazing Product
-                      </td>
-                      <td>$1,230 USD</td>
-                      <td>
-                        <small class="text-danger mr-1">
-                          <i class="fas fa-arrow-down"></i>
-                          3%
-                        </small>
-                        198 Sold
-                      </td>
-                      <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                        Perfect Item
-                        <span class="badge bg-danger">NEW</span>
-                      </td>
-                      <td>$199 USD</td>
-                      <td>
-                        <small class="text-success mr-1">
-                          <i class="fas fa-arrow-up"></i>
-                          63%
-                        </small>
-                        87 Sold
-                      </td>
-                      <td>
-                        <a href="#" class="text-muted">
-                          <i class="fas fa-search"></i>
-                        </a>
-                      </td>
-                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -147,7 +82,6 @@
 import gql from 'graphql-tag';
 
 const GET_USERS = gql`
-
 query MyQuery {
   listUserServiceDevs {
     items {
@@ -156,25 +90,56 @@ query MyQuery {
       name
     }
   }
-}
-
-
-`;
+}`;
 export default {
   name: 'dashboardHome',
   methods: {
- 
+    async getData() {
+      try {
+        const { data } = await this.$apollo.query({
+          query: GET_USERS,
+        });
+
+        console.log(data);
+        this.listUserServiceDevs = data?.listUserServiceDevs;
+      } catch (error) {
+        console.error("Error fetching items:", error);
+        // Handle error states or show error messages to the user.
+      }
+    },
+    async deleteItem(id) {
+
+      try {
+        const { data } = await this.$apollo.mutate({
+          mutation: gql`mutation MyQuery {
+          deleteUserServiceDev(input: {id: "${id}"}){
+          id
+          }
+        }
+        `,
+        });
+        if (data && data.deleteItem) {
+          console.log("Item deleted successfully!");
+          // Optionally, you can handle UI updates or redirects after successful deletion.
+        } else {
+          console.log("Failed to delete item.");
+        }
+        this.getData();
+      } catch (error) {
+        console.log(error);
+        console.log("Error deleting item:", error);
+        // Handle error states or show error messages to the user.
+      }
+    }
   },
   data() {
     return {
       listUserServiceDevs: [],
     }
   },
-  apollo: {
-    listUserServiceDevs: {
-      query: GET_USERS,
 
-    }
-  },
+  created() {
+    this.getData();
+  }
 }
 </script>
