@@ -96,6 +96,7 @@ export default {
   name: 'dashboardHome',
   methods: {
     async getData() {
+      this.$store.commit('isShowLoader', true)
       try {
         const { data } = await this.$apollo.query({
           query: GET_USERS,
@@ -108,9 +109,10 @@ export default {
         console.error("Error fetching items:", error);
         // Handle error states or show error messages to the user.
       }
+      this.$store.commit('isShowLoader', false)
     },
     async deleteItem(id) {
-
+      this.$store.commit('isShowLoader', true)
       try {
         const { data } = await this.$apollo.mutate({
           mutation: gql`mutation MyQuery {
@@ -134,6 +136,7 @@ export default {
         console.log("Error deleting item:", error);
         // Handle error states or show error messages to the user.
       }
+      this.$store.commit('isShowLoader', false)
     },
 
     updateItem(id){

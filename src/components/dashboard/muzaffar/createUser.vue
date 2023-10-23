@@ -81,11 +81,13 @@ export default {
     },
     methods: {
         submit() {
+            this.$store.commit('isShowLoader', true)
             if (this.$route.params.id) {
                 this.updateData();
             } else {
                 this.createUser();
             }
+            this.$store.commit('isShowLoader', false)
 
         },
         async createUser() {
