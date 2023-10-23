@@ -45,7 +45,7 @@
                                                 <input type="email" class="form-control" id="email"
                                                     placeholder="Enter Email" v-model="user.email">
                                             </div>
-                                            <button class="btn btn-primary" @click="createUser">Create</button>
+                                            <button class="btn btn-primary" @click="submit()">Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -80,6 +80,14 @@ export default {
         }
     },
     methods: {
+        submit() {
+            if (this.$route.params.id) {
+                this.updateData();
+            } else {
+                this.createUser();
+            }
+
+        },
         async createUser() {
             console.log("AAAAAAAAa ", this.user);
 
@@ -107,8 +115,62 @@ export default {
                 this.$toast.error(error?.message || 'something went wrong');
                 // Handle error states or show error messages to the user.
             }
+        },
+        async updateData(){
+            try {
+                const { data } = await this.$apollo.mutate({
+                    mutation: gql`mutation MyQuery {
+                        updateUserServiceDev(input: {email: "${this.user.email}", id: "${this.user.id}", name: "${this.user.name}"}) {
+                                            id,
+                                            name,
+                                            email
+                                        }
+                                    }`,
+                });
+
+                if (data && !data.updateUserServiceDev) {
+                    // Optionally, you can handle UI updates or redirects after successful deletion.
+                    this.$toast.error('something went wrong');
+                }
+                this.$router.push('/dashboard/listUser')
+                // this.getData();
+            } catch (error) {
+                console.log(error);
+                console.log("Error deleting item:", error);
+
+                this.$toast.error(error?.message || 'something went wrong');
+                // Handle error states or show error messages to the user.
+            }
+        },
+        async getUser(id) {
+            try {
+                const { data } = await this.$apollo.query({
+                    query: gql`query MyQuery {
+            getUserServiceDev(id: "${id}"){
+    email
+    id
+    name
+  }
+            }`
+                });
+
+                console.log(data);
+                // this.listUserServiceDevs = data?.listUserServiceDevs;
+                if (data?.getUserServiceDev) {
+                    this.user = data.getUserServiceDev;
+                }
+            } catch (error) {
+                console.error("Error fetching items:", error);
+                // Handle error states or show error messages to the user.
+            }
+        },
+    },
+    created() {
+        console.log(this.$route.params.id);
+        if (this.$route.params.id) {
+            this.getUser(this.$route.params.id);
         }
-    }
+    },
 }
 </script>
 

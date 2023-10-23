@@ -77,6 +77,11 @@ const routes = [
             name: 'createUser',
             component: Vue.component('createUser', require('./components/dashboard/muzaffar/createUser').default)
          },
+         {
+            path: 'updateUser/:id',
+            name: 'updateUser',
+            component: Vue.component('createUser', require('./components/dashboard/muzaffar/createUser').default)
+         },
 
       ]
    }

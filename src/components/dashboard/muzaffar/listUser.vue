@@ -56,6 +56,7 @@
                         {{ item?.email }}
                       </td>
                       <td>
+                        <button class="btn btn-info" @click="updateItem(item.id)">Update</button>
                         <button class="btn btn-danger" @click="deleteItem(item.id)">Delete</button>
                       </td>
                     </tr>
@@ -98,6 +99,7 @@ export default {
       try {
         const { data } = await this.$apollo.query({
           query: GET_USERS,
+          fetchPolicy: 'no-cache'
         });
 
         console.log(data);
@@ -119,13 +121,12 @@ export default {
         `,
         });
 
-        console.log(data);
         if (data && !data.deleteUserServiceDev) {
           console.log("Item deleted successfully!");
           // Optionally, you can handle UI updates or redirects after successful deletion.
           this.$toast.error('something went wrong');
         } else {
-          this.getData();
+          this.getData();   
         }
         
       } catch (error) {
@@ -133,15 +134,20 @@ export default {
         console.log("Error deleting item:", error);
         // Handle error states or show error messages to the user.
       }
+    },
+
+    updateItem(id){
+      this.$router.push('/dashboard/updateUser/'+id)
     }
   },
+
   data() {
     return {
       listUserServiceDevs: [],
     }
   },
 
-  created() {
+  mounted() {
     this.getData();
   }
 }
