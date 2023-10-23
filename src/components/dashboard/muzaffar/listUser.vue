@@ -118,13 +118,16 @@ export default {
         }
         `,
         });
-        if (data && data.deleteItem) {
+
+        console.log(data);
+        if (data && !data.deleteUserServiceDev) {
           console.log("Item deleted successfully!");
           // Optionally, you can handle UI updates or redirects after successful deletion.
+          this.$toast.error('something went wrong');
         } else {
-          console.log("Failed to delete item.");
+          this.getData();
         }
-        this.getData();
+        
       } catch (error) {
         console.log(error);
         console.log("Error deleting item:", error);
